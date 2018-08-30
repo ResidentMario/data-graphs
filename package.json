@@ -1,0 +1,32 @@
+{
+  "name": "data-graphs",
+  "version": "1.0.0",
+  "description": "Data in context",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx browserify -t [babelify --presets [ react env ] ] src/index.js -o dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ResidentMario/data-graphs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ResidentMario/data-graphs/issues"
+  },
+  "homepage": "https://github.com/ResidentMario/data-graphs#readme",
+  "dependencies": {
+    "d3": "^5.7.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2"
+  }
+}
