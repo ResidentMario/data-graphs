@@ -1,0 +1,32 @@
+.app-frame {
+    width: 100%;
+}
+.graph-viz-frame {
+    margin: auto;
+    width: 100%;
+    max-width: 800px;
+}
+.graph-viz {
+    width: 100%;
+    display: block;
+}
+.database-node {
+    fill: lightsteelblue;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+.database-node:hover {
+    fill: #a9c4f5;
+    cursor: pointer;
+}
+.database-node:active {
+    fill: lightsteelblue;
+}
+.test-triangle {
+    transform: rotate(0deg);
+}
+.separator {
+    stroke-width: 3;
+    stroke: steelblue;
+    transform: scale(1, -1);
+}
