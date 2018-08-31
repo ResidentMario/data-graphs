@@ -81,8 +81,11 @@ class Graph extends Component {
         }
 
         for (let cls of Object.keys(this.props.contents)) {
+
             let location = this.props.order.findIndex(e => e.type === cls);
             this.props.contents[cls].forEach((item, item_idx) => {
+                console.log('About to graph ', item);
+
                 let [cx, cy] = nodePosition(item_idx, location, 80);
                 let rgb = this.props.order[location].rgb;
 
@@ -115,7 +118,16 @@ class Graph extends Component {
         this.build();
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.count_contents !== this.props.count_contents) {
+            console.log("FOO");
+            return true;
+        }
+        return false;
+    }
+
     render() {
+        this.build();
         return <svg className={"graph-viz"} viewBox={"-400 -400 800 800"} ref={node => this.node = node}>
         </svg>
     }

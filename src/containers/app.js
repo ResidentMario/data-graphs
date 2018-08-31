@@ -21,12 +21,13 @@ class App extends Component {
                 {type: 'external data', rgb: '255,255,191'}
             ],
             'contents': {
-                'exploration': ['Foo'],
-                'visualization': ['Bar'],
-                'comment': ['Baz'],
+                'exploration': [],
+                'visualization': [],
+                'comment': [],
                 'external link': [],
                 'external data': []
             },
+            'count_contents': 0,
             'database_defined': true,
             // null if no form is open, @type if one is.
             'form_open': null,
@@ -49,10 +50,34 @@ class App extends Component {
             );
         };
 
+        const onBackButtonClick = () => {
+            this.setState(Object.assign({}, this.state, {form_open: null, form_contents: {}}));
+        };
+
+        const onResetButtonClick = () => {
+            this.setState(Object.assign({}, this.state, {form_contents: {}}));
+        };
+
+        const onSubmit = () => {
+            const type = this.state.form_open;
+            const new_obj = this.state.form_contents;
+
+            let newContents = Object.assign({}, this.state.contents);
+            newContents[type].push(new_obj);
+
+            this.setState(Object.assign({}, this.state,
+                {form_open: null, form_contents: {}, contents: newContents,
+                    count_contents: this.state.count_contents + 1})
+            );
+        };
+
         let form = (this.state.form_open) ?
             <Form type={this.state.form_open}
                   form_contents={this.state.form_contents}
                   genericOnChange={genericOnChange}
+                  onBackButtonClick={onBackButtonClick}
+                  onResetButtonClick={onResetButtonClick}
+                  onSubmit={onSubmit}
             /> :
             null;
 
@@ -67,6 +92,7 @@ class App extends Component {
                             order={this.state.order}
                             contents={this.state.contents}
                             database_defined={this.state.database_defined}
+                            count_contents={this.state.count_contents}
                         />
                     </div>
                     <div className={"footer-frame"}>

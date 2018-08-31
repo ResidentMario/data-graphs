@@ -17,7 +17,8 @@ class FormButton extends Component {
         const type_classname = `form-fill-button-${this.props.button_type}`;
         const active_classname = `form-fill-button-${this.props.active ? 'active' : 'inactive'}`;
 
-        return <div className={`form-fill-button ${type_classname} ${active_classname}`}>
+        return <div className={`form-fill-button ${type_classname} ${active_classname}`}
+                    onClick={this.props.active ? this.props.onClick : undefined}>
             {contents}
         </div>
     }

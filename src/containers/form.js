@@ -35,9 +35,9 @@ class Form extends Component {
             <div className={"form-fill-frame"}>
                 <FormFill type={this.props.type} form_contents={this.props.form_contents} genericOnChange={this.props.genericOnChange}/>
             </div>
-            <FormButton button_type={'back'} active={true}/>
-            <FormButton button_type={'reset'} active={reset_button_active}/>
-            <FormButton button_type={'submit'} active={submit_button_active}/>
+            <FormButton button_type={'back'} active={true} onClick={this.props.onBackButtonClick}/>
+            <FormButton button_type={'reset'} active={reset_button_active} onClick={this.props.onResetButtonClick}/>
+            <FormButton button_type={'submit'} active={submit_button_active} onClick={this.props.onSubmit}/>
         </div>
     }
 
