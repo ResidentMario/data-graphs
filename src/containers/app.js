@@ -2,6 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import Graph from './graph';
 import ButtonArray from './buttonarray';
+import Form from './form';
 
 
 class App extends Component {
@@ -26,25 +27,56 @@ class App extends Component {
                 'external link': [],
                 'external data': []
             },
-            'database_defined': true
+            'database_defined': true,
+            // null if no form is open, @type if one is.
+            'form_open': null,
+            'form_contents': {}
         }
     }
 
     render() {
-        return <div className={"app-frame"}>
-            <div className={"graph-viz-frame"}>
-                <Graph
-                    order={this.state.order}
-                    contents={this.state.contents}
-                    database_defined={this.state.database_defined}/>
-            </div>
-            <div className={"footer-frame"}>
-                <ButtonArray order={this.state.order}/>
+        const onClickButton = (type) => {
+            this.setState(Object.assign({}, this.state, {form_open: type, form_contents: {}}));
+        };
 
-                <div className={"sharer-frame"}>
-                    {/*// TODO*/}
+        const genericOnChange = (func) => {
+            console.log(this.state.form_contents);
+            this.setState(Object.assign(
+                {},
+                this.state,
+                {form_contents: func(this.state.form_contents)}
+                )
+            );
+        };
+
+        let form = (this.state.form_open) ?
+            <Form type={this.state.form_open}
+                  form_contents={this.state.form_contents}
+                  genericOnChange={genericOnChange}
+            /> :
+            null;
+
+        return <div className={"app-frame"}>
+            {[
+                <div className={"form-placement-frame"}>
+                    {form}
+                </div>,
+                <div>
+                    <div className={"graph-viz-frame"} style={{opacity: this.state.form_open? 0.5 : 1}}>
+                        <Graph
+                            order={this.state.order}
+                            contents={this.state.contents}
+                            database_defined={this.state.database_defined}
+                        />
+                    </div>
+                    <div className={"footer-frame"}>
+                            <ButtonArray order={this.state.order} onClickButton={onClickButton}/>
+                        <div className={"sharer-frame"}>
+                        {/*// TODO*/}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            ]}
         </div>
     }
 

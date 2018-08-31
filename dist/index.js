@@ -38558,6 +38558,10 @@ var _buttonarray = require('./buttonarray');
 
 var _buttonarray2 = _interopRequireDefault(_buttonarray);
 
+var _form = require('./form');
+
+var _form2 = _interopRequireDefault(_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38585,7 +38589,10 @@ var App = function (_Component) {
                 'external link': [],
                 'external data': []
             },
-            'database_defined': true
+            'database_defined': true,
+            // null if no form is open, @type if one is.
+            'form_open': null,
+            'form_contents': {}
         };
         return _this;
     }
@@ -38593,23 +38600,48 @@ var App = function (_Component) {
     _createClass(App, [{
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var onClickButton = function onClickButton(type) {
+                _this2.setState(Object.assign({}, _this2.state, { form_open: type, form_contents: {} }));
+            };
+
+            var genericOnChange = function genericOnChange(func) {
+                console.log(_this2.state.form_contents);
+                _this2.setState(Object.assign({}, _this2.state, { form_contents: func(_this2.state.form_contents) }));
+            };
+
+            var form = this.state.form_open ? _react2.default.createElement(_form2.default, { type: this.state.form_open,
+                form_contents: this.state.form_contents,
+                genericOnChange: genericOnChange
+            }) : null;
+
             return _react2.default.createElement(
                 'div',
                 { className: "app-frame" },
-                _react2.default.createElement(
+                [_react2.default.createElement(
                     'div',
-                    { className: "graph-viz-frame" },
-                    _react2.default.createElement(_graph2.default, {
-                        order: this.state.order,
-                        contents: this.state.contents,
-                        database_defined: this.state.database_defined })
-                ),
-                _react2.default.createElement(
+                    { className: "form-placement-frame" },
+                    form
+                ), _react2.default.createElement(
                     'div',
-                    { className: "footer-frame" },
-                    _react2.default.createElement(_buttonarray2.default, { order: this.state.order }),
-                    _react2.default.createElement('div', { className: "sharer-frame" })
-                )
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: "graph-viz-frame", style: { opacity: this.state.form_open ? 0.5 : 1 } },
+                        _react2.default.createElement(_graph2.default, {
+                            order: this.state.order,
+                            contents: this.state.contents,
+                            database_defined: this.state.database_defined
+                        })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: "footer-frame" },
+                        _react2.default.createElement(_buttonarray2.default, { order: this.state.order, onClickButton: onClickButton }),
+                        _react2.default.createElement('div', { className: "sharer-frame" })
+                    )
+                )]
             );
         }
     }]);
@@ -38619,11 +38651,11 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"./buttonarray":59,"./graph":60,"react":56}],58:[function(require,module,exports){
+},{"./buttonarray":58,"./form":59,"./graph":62,"react":56}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -38632,64 +38664,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _graphbutton = require('./graphbutton');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Button = function (_Component) {
-    _inherits(Button, _Component);
-
-    function Button() {
-        _classCallCheck(this, Button);
-
-        return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).apply(this, arguments));
-    }
-
-    _createClass(Button, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: "button-frame", style: {
-                        background: 'rgba(' + this.props.rgb + ',0.7)',
-                        boxShadow: '0 0 2px 2px rgba(' + this.props.rgb + ',0.5)',
-                        border: '1px solid rgba(' + this.props.rgb + ',1)'
-                    } },
-                _react2.default.createElement(
-                    'div',
-                    { className: "button-circle" },
-                    '+'
-                ),
-                this.props.name
-            );
-        }
-    }]);
-
-    return Button;
-}(_react.Component);
-
-exports.default = Button;
-
-},{"react":56}],59:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _button = require('./button');
-
-var _button2 = _interopRequireDefault(_button);
+var _graphbutton2 = _interopRequireDefault(_graphbutton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38700,41 +38677,385 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ButtonArray = function (_Component) {
-    _inherits(ButtonArray, _Component);
+        _inherits(ButtonArray, _Component);
 
-    function ButtonArray() {
-        _classCallCheck(this, ButtonArray);
+        function ButtonArray() {
+                _classCallCheck(this, ButtonArray);
 
-        return _possibleConstructorReturn(this, (ButtonArray.__proto__ || Object.getPrototypeOf(ButtonArray)).apply(this, arguments));
-    }
-
-    _createClass(ButtonArray, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: "button-array" },
-                [_react2.default.createElement(_button2.default, { name: "Comment", rgb: this.props.order.find(function (e) {
-                        return e.type === 'comment';
-                    }).rgb }), _react2.default.createElement(_button2.default, { name: "Exploration", rgb: this.props.order.find(function (e) {
-                        return e.type === 'exploration';
-                    }).rgb }), _react2.default.createElement(_button2.default, { name: "Visualization", rgb: this.props.order.find(function (e) {
-                        return e.type === 'visualization';
-                    }).rgb }), _react2.default.createElement(_button2.default, { name: "External Link", rgb: this.props.order.find(function (e) {
-                        return e.type === 'external link';
-                    }).rgb }), _react2.default.createElement(_button2.default, { name: "External Data", rgb: this.props.order.find(function (e) {
-                        return e.type === 'external data';
-                    }).rgb })]
-            );
+                return _possibleConstructorReturn(this, (ButtonArray.__proto__ || Object.getPrototypeOf(ButtonArray)).apply(this, arguments));
         }
-    }]);
 
-    return ButtonArray;
+        _createClass(ButtonArray, [{
+                key: 'render',
+                value: function render() {
+                        var _this2 = this;
+
+                        return _react2.default.createElement(
+                                'div',
+                                { className: "button-array" },
+                                [_react2.default.createElement(_graphbutton2.default, { name: "Comment",
+                                        rgb: this.props.order.find(function (e) {
+                                                return e.type === 'comment';
+                                        }).rgb,
+                                        onClick: function onClick() {
+                                                return _this2.props.onClickButton('comment');
+                                        }
+                                }), _react2.default.createElement(_graphbutton2.default, { name: "Exploration",
+                                        rgb: this.props.order.find(function (e) {
+                                                return e.type === 'exploration';
+                                        }).rgb,
+                                        onClick: function onClick() {
+                                                return _this2.props.onClickButton('exploration');
+                                        }
+                                }), _react2.default.createElement(_graphbutton2.default, { name: "Visualization",
+                                        rgb: this.props.order.find(function (e) {
+                                                return e.type === 'visualization';
+                                        }).rgb,
+                                        onClick: function onClick() {
+                                                return _this2.props.onClickButton('visualization');
+                                        }
+                                }), _react2.default.createElement(_graphbutton2.default, { name: "External Link",
+                                        rgb: this.props.order.find(function (e) {
+                                                return e.type === 'external link';
+                                        }).rgb,
+                                        onClick: function onClick() {
+                                                return _this2.props.onClickButton('external link');
+                                        }
+                                }), _react2.default.createElement(_graphbutton2.default, { name: "External Data",
+                                        rgb: this.props.order.find(function (e) {
+                                                return e.type === 'external data';
+                                        }).rgb,
+                                        onClick: function onClick() {
+                                                return _this2.props.onClickButton('external data');
+                                        }
+                                })]
+                        );
+                }
+        }]);
+
+        return ButtonArray;
 }(_react.Component);
 
 exports.default = ButtonArray;
 
-},{"./button":58,"react":56}],60:[function(require,module,exports){
+},{"./graphbutton":63,"react":56}],59:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _formfill = require('./formfill');
+
+var _formfill2 = _interopRequireDefault(_formfill);
+
+var _formbutton = require('./formbutton');
+
+var _formbutton2 = _interopRequireDefault(_formbutton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Form = function (_Component) {
+    _inherits(Form, _Component);
+
+    function Form() {
+        _classCallCheck(this, Form);
+
+        return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+    }
+
+    _createClass(Form, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var c = null;
+            if (this.props.type === "comment") {
+                c = _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'form-label-emph' },
+                        'Comments'
+                    ),
+                    ' are a lightweight way of telling other users what to expect from a dataset. A quality comment might point out an inconsistency in the dataset to watch out for, provide domain knowledge on the contents of the dataset helpful for analysis, or summarize how well the dataset fits a specific use case.'
+                );
+            } else if (this.props.type === "exploration") {
+                c = _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'form-label-emph' },
+                        'Explorations'
+                    ),
+                    ', also known as exploratory data analyses, are code-literate analyses (usually in Jupyter or RMarkdown) of a dataset. A good exploration provides a good overview of important or useful features of the dataset, one that other users may use as the basis of their own work.'
+                );
+            } else if (this.props.type === "visualization") {
+                c = _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'form-label-emph' },
+                        'Visualizations'
+                    ),
+                    ' are graphics created using a dataset. A good visualization provides a clear, interpretable result about one or more features of a dataset.'
+                );
+            } else if (this.props.type === "external link") {
+                c = _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'form-label-emph' },
+                        'External links'
+                    ),
+                    ' point to additional resources (not explorations or visualizations) useful for interpreting a dataset. A good example of an external link might be a document describing where the data came from and how it was collected.'
+                );
+            } else {
+                c = _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'form-label-emph' },
+                        'External data'
+                    ),
+                    ' are links to other datasets which may be useful in analyzing this one. Good external data include so-called "support datasets": simple datasets which, whilst not very useful on their own, can help contextualize more complex ones.'
+                );
+            }
+
+            var submit_button_active = false;
+            var form_keys = Object.keys(this.props.form_contents);
+            if (form_keys.length >= 2 && form_keys.map(function (k) {
+                return _this2.props.form_contents[k].length > 0;
+            }).every(function (v) {
+                return v;
+            })) {
+                submit_button_active = true;
+            }
+
+            var reset_button_active = form_keys.length > 0 && form_keys.map(function (k) {
+                return _this2.props.form_contents[k].length > 0;
+            }).some(function (v) {
+                return v;
+            });
+
+            return _react2.default.createElement(
+                'div',
+                { className: "form-frame" },
+                _react2.default.createElement(
+                    'div',
+                    { className: "form-explainer" },
+                    c
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: "form-fill-frame" },
+                    _react2.default.createElement(_formfill2.default, { type: this.props.type, form_contents: this.props.form_contents, genericOnChange: this.props.genericOnChange })
+                ),
+                _react2.default.createElement(_formbutton2.default, { button_type: 'back', active: true }),
+                _react2.default.createElement(_formbutton2.default, { button_type: 'reset', active: reset_button_active }),
+                _react2.default.createElement(_formbutton2.default, { button_type: 'submit', active: submit_button_active })
+            );
+        }
+    }]);
+
+    return Form;
+}(_react.Component);
+
+exports.default = Form;
+
+},{"./formbutton":60,"./formfill":61,"react":56}],60:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FormButton = function (_Component) {
+    _inherits(FormButton, _Component);
+
+    function FormButton() {
+        _classCallCheck(this, FormButton);
+
+        return _possibleConstructorReturn(this, (FormButton.__proto__ || Object.getPrototypeOf(FormButton)).apply(this, arguments));
+    }
+
+    _createClass(FormButton, [{
+        key: 'render',
+        value: function render() {
+            var contents = null;
+            if (this.props.button_type === "back") {
+                contents = '←';
+            } else if (this.props.button_type === "reset") {
+                contents = '↻';
+            } else {
+                contents = '✓';
+            }
+
+            var type_classname = 'form-fill-button-' + this.props.button_type;
+            var active_classname = 'form-fill-button-' + (this.props.active ? 'active' : 'inactive');
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'form-fill-button ' + type_classname + ' ' + active_classname },
+                contents
+            );
+        }
+    }]);
+
+    return FormButton;
+}(_react.Component);
+
+exports.default = FormButton;
+
+},{"react":56}],61:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FormFill = function (_Component) {
+    _inherits(FormFill, _Component);
+
+    function FormFill() {
+        _classCallCheck(this, FormFill);
+
+        return _possibleConstructorReturn(this, (FormFill.__proto__ || Object.getPrototypeOf(FormFill)).apply(this, arguments));
+    }
+
+    _createClass(FormFill, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var onChangeBody = function onChangeBody(event) {
+                return function (priorState) {
+                    return Object.assign({}, priorState, { 'description': event.target.value });
+                };
+            };
+
+            var onChangeTitle = function onChangeTitle(event) {
+                return function (priorState) {
+                    return Object.assign({}, priorState, { 'title': event.target.value });
+                };
+            };
+
+            var onChangeLink = function onChangeLink(event) {
+                return function (priorState) {
+                    return Object.assign({}, priorState, { 'link': event.target.value });
+                };
+            };
+
+            var formFactory = function formFactory(title, body, link) {
+                var objs = [];
+                if (title) {
+                    objs.push(_react2.default.createElement(
+                        'div',
+                        { className: "form-subarea" },
+                        _react2.default.createElement(
+                            'div',
+                            { className: "form-fill-label" },
+                            'Title'
+                        ),
+                        _react2.default.createElement('textarea', { className: "form-textarea-title", placeholder: "Your title", onChange: function onChange(event) {
+                                _this2.props.genericOnChange(onChangeTitle(event));
+                            } })
+                    ));
+                }
+                if (body) {
+                    objs.push(_react2.default.createElement(
+                        'div',
+                        { className: "form-subarea" },
+                        _react2.default.createElement(
+                            'div',
+                            { className: "form-fill-label" },
+                            'Explanation'
+                        ),
+                        _react2.default.createElement('textarea', { className: "form-textarea-body", placeholder: "Your comment body", onChange: function onChange(event) {
+                                _this2.props.genericOnChange(onChangeBody(event));
+                            } })
+                    ));
+                }
+                if (link) {
+                    objs.push(_react2.default.createElement(
+                        'div',
+                        { className: "form-subarea" },
+                        _react2.default.createElement(
+                            'div',
+                            { className: "form-fill-label" },
+                            'Link'
+                        ),
+                        _react2.default.createElement('textarea', { className: "form-textarea-link", placeholder: "Your external URL", onChange: function onChange(event) {
+                                _this2.props.genericOnChange(onChangeLink(event));
+                            } })
+                    ));
+                }
+                return _react2.default.createElement(
+                    'div',
+                    { className: "form-fill-areas-container" },
+                    objs
+                );
+            };
+
+            if (this.props.type === "comment") {
+                return formFactory(true, true, false);
+            } else {
+                return formFactory(true, false, true);
+            }
+        }
+    }]);
+
+    return FormFill;
+}(_react.Component);
+
+exports.default = FormFill;
+
+},{"react":56}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38909,7 +39230,65 @@ var Graph = function (_Component) {
 
 exports.default = Graph;
 
-},{"d3":32,"react":56}],61:[function(require,module,exports){
+},{"d3":32,"react":56}],63:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GraphButton = function (_Component) {
+    _inherits(GraphButton, _Component);
+
+    function GraphButton() {
+        _classCallCheck(this, GraphButton);
+
+        return _possibleConstructorReturn(this, (GraphButton.__proto__ || Object.getPrototypeOf(GraphButton)).apply(this, arguments));
+    }
+
+    _createClass(GraphButton, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: "button-frame",
+                    style: {
+                        background: 'rgba(' + this.props.rgb + ',0.7)',
+                        boxShadow: '0 0 2px 2px rgba(' + this.props.rgb + ',0.5)',
+                        border: '1px solid rgba(' + this.props.rgb + ',1)'
+                    },
+
+                    onClick: this.props.onClick },
+                _react2.default.createElement(
+                    'div',
+                    { className: "button-circle" },
+                    '+'
+                ),
+                this.props.name
+            );
+        }
+    }]);
+
+    return GraphButton;
+}(_react.Component);
+
+exports.default = GraphButton;
+
+},{"react":56}],64:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -38926,4 +39305,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_app2.default, null), document.getElementById('root'));
 
-},{"./containers/app.js":57,"react":56,"react-dom":53}]},{},[61]);
+},{"./containers/app.js":57,"react":56,"react-dom":53}]},{},[64]);

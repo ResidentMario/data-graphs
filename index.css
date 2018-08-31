@@ -1,6 +1,12 @@
 .app-frame {
     width: 100%;
 }
+.form-placement-frame {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
 .graph-viz-frame {
     margin: auto;
     width: 100%;
@@ -87,4 +93,91 @@
 }
 .node-circle:hover {
     opacity: 1;
+}
+.form-frame {
+    position: absolute;
+    width: 100%;
+    max-width: 800px;
+    height: 600px;
+    display: grid;
+    grid-template-rows: 1fr 500px;
+    grid-template-columns: 100px 500px 1fr 1fr 1fr;
+    font-family: Roboto, sans-serif;
+    border-radius: 5px;
+    background: white;
+    z-index: 1000;
+}
+.form-explainer {
+    padding: 20px;
+    border: 1px solid black;
+    grid-column: 2 / -1;
+    grid-row: 1;
+    font-size: 18px;
+}
+.form-label-emph {
+    font-weight: bold;
+    font-size: 24px;
+}
+.form-fill-frame {
+    border: 1px solid black;
+    grid-column: 2 / 2;
+    grid-row: 2;
+    padding: 20px;
+}
+.form-fill-label {
+    font-family: Roboto, sans-serif;
+    font-size: 24px;
+}
+.form-textarea-body {
+    resize: none;
+    width: 100%;
+    height: 5em;
+    font-family: Roboto, sans-serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.form-textarea-title,.form-textarea-link {
+    resize: none;
+    width: 100%;
+    height: 1.2em;
+    font-family: Roboto, sans-serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.form-fill-button {
+    height:50px;
+    width: 50px;
+    margin-top:20px;
+    margin-left:10px;
+    border-radius:25px;
+    background: white;
+    text-align: center;
+    vertical-align: center;
+    font-size:36px;
+}
+.form-fill-button-active {
+    border: 2px solid black;
+    color: black;
+    cursor: pointer;
+}
+.form-fill-button-inactive {
+    border: 2px solid lightgray;
+    color: gray;
+    cursor: not-allowed;
+}
+.form-fill-button-active:hover {
+    border: 2px solid lightgray;
+    background:#eee;
+}
+.form-fill-button-back {
+    grid-column: 3 / 3;
+    grid-row: 2;
+}
+.form-fill-button-reset {
+    grid-column: 4 / 4;
+    grid-row: 2;
+}
+.form-fill-button-submit {
+    grid-column: 5 / 5;
+    grid-row: 2;
 }
