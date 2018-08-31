@@ -6,19 +6,12 @@ const d3 = require('d3');
 class Graph extends Component {
     constructor() {
         super();
-
-        this.state = {
-            'comments': [],
-            'explorations': [],
-            'visualizations': [],
-            'external resources': [],
-            'suggested datasets': []
-        }
     }
 
     build() {
         let viz = d3.select(".graph-viz");
         let r = 380;
+        let node_r = 40;
 
         viz.append("circle")
             .attr("r", r)
@@ -45,8 +38,8 @@ class Graph extends Component {
 
         let pentagonalSideLength = 2 * r * Math.sin(Math.PI / 5);
 
-        // Heuristic for laying out nodes for a square.
-        const nodeDepth = (node_width, n_row) => n_row * node_width / pentagonalSideLength * r + (n_row - 1) * node_width * 0.4;
+        // Node layout algorithm.
+        const nodeDepth = (node_width, n_row) => n_row * node_width / pentagonalSideLength * r + (n_row) * node_width * 0.4;
         function nodePosition(node_idx, slice_idx, node_width) {
             const [slice_start_angle, slice_end_angle] = [18 + slice_idx * 72, 18 + (slice_idx + 1) * 72];
 
@@ -72,16 +65,41 @@ class Graph extends Component {
             return [node_depth * Math.cos(degreesToRadians(angle)), node_depth * Math.sin(degreesToRadians(angle))];
         }
 
-        viz.append("circle").attr("cx", nodePosition(0, 0, 100)[0]).attr("cy", nodePosition(0, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(0, 1, 100)[0]).attr("cy", nodePosition(0, 1, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(0, 2, 100)[0]).attr("cy", nodePosition(0, 2, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(1, 0, 100)[0]).attr("cy", nodePosition(1, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(2, 0, 100)[0]).attr("cy", nodePosition(2, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(3, 4, 100)[0]).attr("cy", nodePosition(3, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(4, 4, 100)[0]).attr("cy", nodePosition(4, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-        viz.append("circle").attr("cx", nodePosition(5, 4, 100)[0]).attr("cy", nodePosition(5, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
+        viz.append("circle")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", node_r)
+            .classed("database-node-circle", true)
+            .attr("stroke", "gray")
+            .attr("stroke-width", "2px")
+            .attr("fill", "lightgray");
+
+        if (this.props.database_defined) {
+            // TODO: pass in a database icon.
+        } else {
+            // TODO: pass in a plus icon.
+        }
+
+        for (let cls of Object.keys(this.props.contents)) {
+            let location = this.props.order.findIndex(e => e.type === cls);
+            this.props.contents[cls].forEach((item, item_idx) => {
+                let [cx, cy] = nodePosition(item_idx, location, 80);
+                let rgb = this.props.order[location].rgb;
+
+                viz.append("circle")
+                    .attr("cx", cx)
+                    .attr("cy", cy)
+                    .attr("r", node_r)
+                    .attr("fill", `rgba(${rgb},0.8)`)
+                    .attr("stroke", `rgb(${rgb})`)
+                    .attr("stroke-width", "2px")
+                    .attr('transform', 'scale(1, -1)')
+                    .classed("node-circle", true);
+            });
+        }
 
         // Rough to-do:
+        // Re-add database node.
         // Specialize areas with color codes.
         // Make nodes click-able.
         // Introduce buttons for adding nodes.

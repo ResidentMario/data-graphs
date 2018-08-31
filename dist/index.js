@@ -38554,6 +38554,10 @@ var _graph = require('./graph');
 
 var _graph2 = _interopRequireDefault(_graph);
 
+var _buttonarray = require('./buttonarray');
+
+var _buttonarray2 = _interopRequireDefault(_buttonarray);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38571,7 +38575,17 @@ var App = function (_Component) {
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
         _this.state = {
-            'graph_id': null
+            'graph_id': null,
+            // Order of pie slices. Index 0 corresponds with the top-left slice, rest follow in clockwise order.
+            'order': [{ type: 'exploration', rgb: '215,25,28' }, { type: 'visualization', rgb: '43,131,186' }, { type: 'comment', rgb: '253,174,97' }, { type: 'external link', rgb: '171,221,164' }, { type: 'external data', rgb: '255,255,191' }],
+            'contents': {
+                'exploration': ['Foo'],
+                'visualization': ['Bar'],
+                'comment': ['Baz'],
+                'external link': [],
+                'external data': []
+            },
+            'database_defined': true
         };
         return _this;
     }
@@ -38585,9 +38599,17 @@ var App = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: "graph-viz-frame" },
-                    _react2.default.createElement(_graph2.default, null)
+                    _react2.default.createElement(_graph2.default, {
+                        order: this.state.order,
+                        contents: this.state.contents,
+                        database_defined: this.state.database_defined })
                 ),
-                _react2.default.createElement('div', { className: "footer-frame" })
+                _react2.default.createElement(
+                    'div',
+                    { className: "footer-frame" },
+                    _react2.default.createElement(_buttonarray2.default, { order: this.state.order }),
+                    _react2.default.createElement('div', { className: "sharer-frame" })
+                )
             );
         }
     }]);
@@ -38597,12 +38619,129 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"./graph":58,"react":56}],58:[function(require,module,exports){
+},{"./buttonarray":59,"./graph":60,"react":56}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Button = function (_Component) {
+    _inherits(Button, _Component);
+
+    function Button() {
+        _classCallCheck(this, Button);
+
+        return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).apply(this, arguments));
+    }
+
+    _createClass(Button, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: "button-frame", style: {
+                        background: 'rgba(' + this.props.rgb + ',0.7)',
+                        boxShadow: '0 0 2px 2px rgba(' + this.props.rgb + ',0.5)',
+                        border: '1px solid rgba(' + this.props.rgb + ',1)'
+                    } },
+                _react2.default.createElement(
+                    'div',
+                    { className: "button-circle" },
+                    '+'
+                ),
+                this.props.name
+            );
+        }
+    }]);
+
+    return Button;
+}(_react.Component);
+
+exports.default = Button;
+
+},{"react":56}],59:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _button = require('./button');
+
+var _button2 = _interopRequireDefault(_button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ButtonArray = function (_Component) {
+    _inherits(ButtonArray, _Component);
+
+    function ButtonArray() {
+        _classCallCheck(this, ButtonArray);
+
+        return _possibleConstructorReturn(this, (ButtonArray.__proto__ || Object.getPrototypeOf(ButtonArray)).apply(this, arguments));
+    }
+
+    _createClass(ButtonArray, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: "button-array" },
+                [_react2.default.createElement(_button2.default, { name: "Comment", rgb: this.props.order.find(function (e) {
+                        return e.type === 'comment';
+                    }).rgb }), _react2.default.createElement(_button2.default, { name: "Exploration", rgb: this.props.order.find(function (e) {
+                        return e.type === 'exploration';
+                    }).rgb }), _react2.default.createElement(_button2.default, { name: "Visualization", rgb: this.props.order.find(function (e) {
+                        return e.type === 'visualization';
+                    }).rgb }), _react2.default.createElement(_button2.default, { name: "External Link", rgb: this.props.order.find(function (e) {
+                        return e.type === 'external link';
+                    }).rgb }), _react2.default.createElement(_button2.default, { name: "External Data", rgb: this.props.order.find(function (e) {
+                        return e.type === 'external data';
+                    }).rgb })]
+            );
+        }
+    }]);
+
+    return ButtonArray;
+}(_react.Component);
+
+exports.default = ButtonArray;
+
+},{"./button":58,"react":56}],60:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -38628,23 +38767,17 @@ var Graph = function (_Component) {
     function Graph() {
         _classCallCheck(this, Graph);
 
-        var _this = _possibleConstructorReturn(this, (Graph.__proto__ || Object.getPrototypeOf(Graph)).call(this));
-
-        _this.state = {
-            'comments': [],
-            'explorations': [],
-            'visualizations': [],
-            'external resources': [],
-            'suggested datasets': []
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (Graph.__proto__ || Object.getPrototypeOf(Graph)).call(this));
     }
 
     _createClass(Graph, [{
         key: 'build',
         value: function build() {
+            var _this2 = this;
+
             var viz = d3.select(".graph-viz");
             var r = 380;
+            var node_r = 40;
 
             viz.append("circle").attr("r", r).attr("cx", "0").attr("cy", "0").attr("stroke", "black").attr("fill", "transparent");
 
@@ -38664,9 +38797,9 @@ var Graph = function (_Component) {
 
             var pentagonalSideLength = 2 * r * Math.sin(Math.PI / 5);
 
-            // Heuristic for laying out nodes for a square.
+            // Node layout algorithm.
             var nodeDepth = function nodeDepth(node_width, n_row) {
-                return n_row * node_width / pentagonalSideLength * r + (n_row - 1) * node_width * 0.4;
+                return n_row * node_width / pentagonalSideLength * r + n_row * node_width * 0.4;
             };
             function nodePosition(node_idx, slice_idx, node_width) {
                 var slice_start_angle = 18 + slice_idx * 72,
@@ -38694,14 +38827,66 @@ var Graph = function (_Component) {
                 return [node_depth * Math.cos(degreesToRadians(angle)), node_depth * Math.sin(degreesToRadians(angle))];
             }
 
-            viz.append("circle").attr("cx", nodePosition(0, 0, 100)[0]).attr("cy", nodePosition(0, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(0, 1, 100)[0]).attr("cy", nodePosition(0, 1, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(0, 2, 100)[0]).attr("cy", nodePosition(0, 2, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(1, 0, 100)[0]).attr("cy", nodePosition(1, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(2, 0, 100)[0]).attr("cy", nodePosition(2, 0, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(3, 4, 100)[0]).attr("cy", nodePosition(3, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(4, 4, 100)[0]).attr("cy", nodePosition(4, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
-            viz.append("circle").attr("cx", nodePosition(5, 4, 100)[0]).attr("cy", nodePosition(5, 4, 100)[1]).attr("r", 50).attr("transform", "scale(1, -1)");
+            viz.append("circle").attr("cx", 0).attr("cy", 0).attr("r", node_r).classed("database-node-circle", true).attr("stroke", "gray").attr("stroke-width", "2px").attr("fill", "lightgray");
+
+            if (this.props.database_defined) {
+                // TODO: pass in a database icon.
+            } else {
+                    // TODO: pass in a plus icon.
+                }
+
+            var _loop = function _loop(cls) {
+                var location = _this2.props.order.findIndex(function (e) {
+                    return e.type === cls;
+                });
+                _this2.props.contents[cls].forEach(function (item, item_idx) {
+                    var _nodePosition = nodePosition(item_idx, location, 80),
+                        _nodePosition2 = _slicedToArray(_nodePosition, 2),
+                        cx = _nodePosition2[0],
+                        cy = _nodePosition2[1];
+
+                    var rgb = _this2.props.order[location].rgb;
+
+                    viz.append("circle").attr("cx", cx).attr("cy", cy).attr("r", node_r).attr("fill", 'rgba(' + rgb + ',0.8)').attr("stroke", 'rgb(' + rgb + ')').attr("stroke-width", "2px").attr('transform', 'scale(1, -1)').classed("node-circle", true);
+                });
+            };
+
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = Object.keys(this.props.contents)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var cls = _step.value;
+
+                    _loop(cls);
+                }
+
+                // Rough to-do:
+                // Re-add database node.
+                // Specialize areas with color codes.
+                // Make nodes click-able.
+                // Introduce buttons for adding nodes.
+                // Implement adding nodes.
+                // Mock a sharer.
+                // Introduce turn-it-on central node functionality.
+                // Implement a backend.
+                // Make the sharer functional using the backend.
+                // Warn of unsaved progress on exit. Save in-progress graphs to cookie?
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
         }
     }, {
         key: 'componentDidMount',
@@ -38711,10 +38896,10 @@ var Graph = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             return _react2.default.createElement('svg', { className: "graph-viz", viewBox: "-400 -400 800 800", ref: function ref(node) {
-                    return _this2.node = node;
+                    return _this3.node = node;
                 } });
         }
     }]);
@@ -38724,7 +38909,7 @@ var Graph = function (_Component) {
 
 exports.default = Graph;
 
-},{"d3":32,"react":56}],59:[function(require,module,exports){
+},{"d3":32,"react":56}],61:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -38741,4 +38926,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_app2.default, null), document.getElementById('root'));
 
-},{"./containers/app.js":57,"react":56,"react-dom":53}]},{},[59]);
+},{"./containers/app.js":57,"react":56,"react-dom":53}]},{},[61]);
