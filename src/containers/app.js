@@ -42,14 +42,18 @@ class App extends Component {
     render() {
         const onClickAdderButton = (type) => {
             if (this.state.data_package_defined) {
-                this.setState(Object.assign({}, this.state, {form: {type: type, contents: {}}}));
+                this.setState(Object.assign({}, this.state, {form: {type: type, contents: {}, mode: 'create'}}));
             }
         };
 
         const genericOnChange = (func) => {
             this.setState(Object.assign(
                 {}, this.state,
-                {form: {type: this.state.form.type, contents: func(this.state.form.contents)}})
+                {form: {
+                    type: this.state.form.type,
+                    contents: func(this.state.form.contents),
+                    mode: this.state.form.mode
+                }})
             );
         };
 
@@ -58,7 +62,11 @@ class App extends Component {
         };
 
         const onResetButtonClick = () => {
-            this.setState(Object.assign({}, this.state, {form: {type: this.state.form.type, contents: {}}}));
+            this.setState(Object.assign({}, this.state, {form: {
+                type: this.state.form.type,
+                contents: {},
+                mode: this.state.form.mode
+            }}));
         };
 
         const onSubmit = () => {
@@ -70,7 +78,8 @@ class App extends Component {
                 let newDataPackageDefinition = Object.assign({}, new_obj);
 
                 this.setState(Object.assign({}, this.state,
-                    {form: null,
+                    {
+                        form: null,
                         data_package_definition: newDataPackageDefinition,
                         data_package_defined: true
                     })
@@ -89,20 +98,27 @@ class App extends Component {
 
         const onClickDataPackageNode = () => {
             if (!this.state.data_package_defined) {
-                this.setState(Object.assign({}, this.state, {form: {type: 'datapackage', contents: {}}}));
+                this.setState(Object.assign({}, this.state, {form:
+                        {type: 'datapackage', contents: {}, mode: 'create'}}));
             } else {
-                // TODO
-                // this.setState(Object.assign({}, this.state, {node_popup: 'datapackage'}))
+                this.setState(Object.assign({}, this.state, {form: {type: 'datapackage', contents: {}, mode: 'view'}}))
             }
+        };
+
+        const onClickAnnotationNode = (cls, item_idx) => {
+            this.setState(Object.assign({}, this.state, {form:
+                    {type: cls, contents: this.state.graph_contents[cls][item_idx], mode: 'view'}}));
         };
 
         let form = (this.state.form) ?
             <Form type={this.state.form.type}
+                  mode={this.state.form.mode}
                   form_contents={this.state.form.contents}
                   genericOnChange={genericOnChange}
                   onBackButtonClick={onBackButtonClick}
                   onResetButtonClick={onResetButtonClick}
                   onSubmit={onSubmit}
+                  data_package_definition={this.state.data_package_definition}
             /> :
             null;
 
@@ -119,6 +135,7 @@ class App extends Component {
                             data_package_defined={this.state.data_package_defined}
                             count_annotation_nodes={this.state.count_annotation_nodes}
                             onClickDataPackageNode={onClickDataPackageNode}
+                            onClickAnnotationNode={onClickAnnotationNode}
                         />
                     </div>
                     <div className={"footer-frame"}>

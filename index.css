@@ -156,6 +156,7 @@
     text-align: center;
     vertical-align: center;
     font-size:36px;
+    margin-bottom: 20px;
 }
 .form-fill-button-active {
     border: 2px solid black;
@@ -182,4 +183,16 @@
 .form-fill-button-submit {
     grid-column: 5 / 5;
     grid-row: 2;
+}
+.form-view-text {
+    font-family: Roboto, sans-serif;
+    margin-bottom: 10px;
+}
+.form-view-text-title {
+    font-size: 24px;
+}
+.form-view-text-bold-hyperlink {
+    color: steelblue;
+    text-decoration: none;
+    font-weight: bold;
 }

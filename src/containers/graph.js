@@ -101,6 +101,7 @@ class Graph extends Component {
                     .attr("stroke-width", "2px")
                     .attr('transform', 'scale(1, -1)')
                     .classed("node-circle", true)
+                    .on("click", () => { console.log("HELLO!"); this.props.onClickAnnotationNode(cls, item_idx) })
             });
         }
 
