@@ -17,8 +17,10 @@ class Form extends Component {
             c = <p><span className="form-label-emph">Visualizations</span> are graphics created using a dataset. A good visualization provides a clear, interpretable result about one or more features of a dataset.</p>
         } else if (this.props.type === "external link") {
             c = <p><span className="form-label-emph">External links</span> point to additional resources (not explorations or visualizations) useful for interpreting a dataset. A good example of an external link might be a document describing where the data came from and how it was collected.</p>
-        } else {
+        } else if (this.props.type === "external data") {
             c = <p><span className="form-label-emph">External data</span> are links to other datasets which may be useful in analyzing this one. Good external data include so-called "support datasets": simple datasets which, whilst not very useful on their own, can help contextualize more complex ones.</p>
+        } else {  // dataset
+            c = "";
         }
 
         let submit_button_active = false;

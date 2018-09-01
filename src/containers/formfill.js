@@ -53,6 +53,8 @@ class FormFill extends Component {
 
         if (this.props.type === "comment") {
             return formFactory(true, true, false);
+        } else if (this.props.type === "dataset") {
+            return formFactory(true, false, true)
         } else {
             return formFactory(true, false, true);
         }

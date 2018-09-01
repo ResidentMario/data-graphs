@@ -28,11 +28,11 @@ class App extends Component {
                 'external data': []
             },
             'count_contents': 0,
-            'database_defined': false,
+            'database_defined': true,
             // null if no form is open, @type if one is.
             'form_open': null,
             'form_contents': {},
-            'database_definition': {}
+            'dataset_definition': null
         }
     }
 
@@ -74,6 +74,12 @@ class App extends Component {
             );
         };
 
+        const onClickDatabaseNode = () => {
+            if (!this.state.database_defined) {
+                this.setState(Object.assign({}, this.state, {form_open: 'dataset'}));
+            }
+        };
+
         let form = (this.state.form_open) ?
             <Form type={this.state.form_open}
                   form_contents={this.state.form_contents}
@@ -96,6 +102,7 @@ class App extends Component {
                             contents={this.state.contents}
                             database_defined={this.state.database_defined}
                             count_contents={this.state.count_contents}
+                            onClickDatabaseNode={onClickDatabaseNode}
                         />
                     </div>
                     <div className={"footer-frame"}>

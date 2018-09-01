@@ -73,21 +73,14 @@ class Graph extends Component {
             .classed("database-node-circle-todo", this.props.database_defined)
             .classed("database-node-circle-initialized", !this.props.database_defined);
 
-        if (!this.props.database_defined) {
-            viz.append("text")
-                .attr("x", 0)
-                .attr("y", 0)
-                .classed("database-node-circle-todo-label", true)
-                .attr("text-anchor", "middle")
-                .attr("alignment-baseline", "middle")
-                .text('+');
-        }
-
-        if (this.props.database_defined) {
-            // TODO: pass in a database icon.
-        } else {
-            // TODO: pass in a plus icon.
-        }
+        let dataset_defined_circle_text = this.props.database_defined ? '💾' : '+';
+        viz.append("text")
+            .attr("x", 0)
+            .attr("y", 0)
+            .classed("database-node-circle-label", true)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .text(dataset_defined_circle_text);
 
         for (let cls of Object.keys(this.props.contents)) {
 
