@@ -4,6 +4,7 @@ import Graph from './graph';
 import ButtonArray from './buttonarray';
 import Form from './form';
 
+// TODO: {datasets, databases} -> datapackages
 
 class App extends Component {
 
@@ -28,7 +29,7 @@ class App extends Component {
                 'external data': []
             },
             'count_contents': 0,
-            'database_defined': true,
+            'database_defined': false,
             // null if no form is open, @type if one is.
             'form_open': null,
             'form_contents': {},
@@ -65,13 +66,26 @@ class App extends Component {
             const type = this.state.form_open;
             const new_obj = this.state.form_contents;
 
-            let newContents = Object.assign({}, this.state.contents);
-            newContents[type].push(new_obj);
+            if (this.state.form_open === 'dataset') {
+                // Path for defining a dataset.
+                let newDatabaseDefinition = this.state.form_contents;
 
-            this.setState(Object.assign({}, this.state,
-                {form_open: null, form_contents: {}, contents: newContents,
-                    count_contents: this.state.count_contents + 1})
-            );
+                this.setState(Object.assign({}, this.state,
+                    {form_open: null, form_contents: {},
+                        dataset_definition: newDatabaseDefinition,
+                        database_defined: true
+                    })
+                );
+            } else {
+                // Path for adding nodes.
+                let newContents = Object.assign({}, this.state.contents);
+                newContents[type].push(new_obj);
+
+                this.setState(Object.assign({}, this.state,
+                    {form_open: null, form_contents: {}, contents: newContents,
+                        count_contents: this.state.count_contents + 1})
+                );
+            }
         };
 
         const onClickDatabaseNode = () => {

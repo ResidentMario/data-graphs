@@ -71,7 +71,8 @@ class Graph extends Component {
             .attr("r", node_r)
             .classed("database-node-circle", true)
             .classed("database-node-circle-todo", this.props.database_defined)
-            .classed("database-node-circle-initialized", !this.props.database_defined);
+            .classed("database-node-circle-initialized", !this.props.database_defined)
+            .on("click", () => { this.props.onClickDatabaseNode(); });
 
         let dataset_defined_circle_text = this.props.database_defined ? '💾' : '+';
         viz.append("text")
@@ -80,7 +81,8 @@ class Graph extends Component {
             .classed("database-node-circle-label", true)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .text(dataset_defined_circle_text);
+            .text(dataset_defined_circle_text)
+            .on("click", () => { this.props.onClickDatabaseNode(); });
 
         for (let cls of Object.keys(this.props.contents)) {
 
@@ -99,21 +101,10 @@ class Graph extends Component {
                     .attr("stroke", `rgb(${rgb})`)
                     .attr("stroke-width", "2px")
                     .attr('transform', 'scale(1, -1)')
-                    .classed("node-circle", true);
+                    .classed("node-circle", true)
             });
         }
 
-        // Rough to-do:
-        // Re-add database node.
-        // Specialize areas with color codes.
-        // Make nodes click-able.
-        // Introduce buttons for adding nodes.
-        // Implement adding nodes.
-        // Mock a sharer.
-        // Introduce turn-it-on central node functionality.
-        // Implement a backend.
-        // Make the sharer functional using the backend.
-        // Warn of unsaved progress on exit. Save in-progress graphs to cookie?
     }
 
     componentDidMount() {
@@ -122,7 +113,6 @@ class Graph extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.count_contents !== this.props.count_contents) {
-            console.log("FOO");
             return true;
         }
         return false;

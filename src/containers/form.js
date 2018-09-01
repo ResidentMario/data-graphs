@@ -19,8 +19,8 @@ class Form extends Component {
             c = <p><span className="form-label-emph">External links</span> point to additional resources (not explorations or visualizations) useful for interpreting a dataset. A good example of an external link might be a document describing where the data came from and how it was collected.</p>
         } else if (this.props.type === "external data") {
             c = <p><span className="form-label-emph">External data</span> are links to other datasets which may be useful in analyzing this one. Good external data include so-called "support datasets": simple datasets which, whilst not very useful on their own, can help contextualize more complex ones.</p>
-        } else {  // dataset
-            c = "";
+        } else {  // data package
+            c = <p><span className={"form-label-emph"}>Data packages</span> are groups of files that represent collections of data. To get started, please provide a name of and a link to a dataset you are interested in annotating.</p>
         }
 
         let submit_button_active = false;

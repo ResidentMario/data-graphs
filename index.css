@@ -32,12 +32,6 @@
     color: darkgray;
     cursor: pointer;
 }
-/*.database-node-circle:active {*/
-    /*fill: lightsteelblue;*/
-/*}*/
-.test-triangle {
-    transform: rotate(0deg);
-}
 .separator {
     stroke-width: 3;
     stroke: steelblue;
