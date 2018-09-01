@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 
 
-class GraphButton extends Component {
+class AdderButton extends Component {
 
     render() {
         let style = null;
@@ -33,4 +33,4 @@ class GraphButton extends Component {
 
 }
 
-export default GraphButton;
+export default AdderButton;

@@ -69,29 +69,28 @@ class Graph extends Component {
             .attr("cx", 0)
             .attr("cy", 0)
             .attr("r", node_r)
-            .classed("database-node-circle", true)
-            .classed("database-node-circle-todo", this.props.database_defined)
-            .classed("database-node-circle-initialized", !this.props.database_defined)
-            .on("click", () => { this.props.onClickDatabaseNode(); });
+            .classed("data-package-node-circle", true)
+            .classed("data-package-node-circle-todo", this.props.data_package_defined)
+            .classed("data-package-node-circle-initialized", !this.props.data_package_defined)
+            .on("click", () => { this.props.onClickDataPackageNode(); });
 
-        let dataset_defined_circle_text = this.props.database_defined ? '💾' : '+';
+        let data_package_node_text_label = this.props.data_package_defined ? '💾' : '+';
         viz.append("text")
             .attr("x", 0)
             .attr("y", 0)
-            .classed("database-node-circle-label", true)
+            .classed("data-package-node-circle-label", true)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .text(dataset_defined_circle_text)
-            .on("click", () => { this.props.onClickDatabaseNode(); });
+            .text(data_package_node_text_label)
+            .on("click", () => { this.props.onClickDataPackageNode(); });
 
         for (let cls of Object.keys(this.props.contents)) {
 
-            let location = this.props.order.findIndex(e => e.type === cls);
+            let location = this.props.annotation_order.findIndex(e => e.type === cls);
             this.props.contents[cls].forEach((item, item_idx) => {
-                console.log('About to graph ', item);
 
                 let [cx, cy] = nodePosition(item_idx, location, 80);
-                let rgb = this.props.order[location].rgb;
+                let rgb = this.props.annotation_order[location].rgb;
 
                 viz.append("circle")
                     .attr("cx", cx)
@@ -107,16 +106,13 @@ class Graph extends Component {
 
     }
 
-    componentDidMount() {
-        this.build();
-    }
+    componentDidMount() { this.build(); }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.count_contents !== this.props.count_contents) {
-            return true;
-        }
-        return false;
+        return (nextProps.count_annotation_nodes !== this.props.count_annotation_nodes ||
+            nextProps.data_package_defined !== this.props.data_package_defined)
     }
+
 
     render() {
         this.build();

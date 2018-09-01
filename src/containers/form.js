@@ -24,6 +24,7 @@ class Form extends Component {
         }
 
         let submit_button_active = false;
+        console.log(this.props.form_contents);
         let form_keys = Object.keys(this.props.form_contents);
         if (form_keys.length >= 2 && form_keys.map(k => this.props.form_contents[k].length > 0).every(v => v)) {
             submit_button_active = true;

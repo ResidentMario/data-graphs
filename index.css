@@ -16,17 +16,17 @@
     width: 100%;
     display: block;
 }
-.database-node-circle {
+.data-package-node-circle {
     fill: lightgray;
     stroke: darkgray;
     stroke-width: 2px;
 }
-.database-node-circle:hover {
+.data-package-node-circle:hover {
     stroke: black;
     fill: #eee;
     cursor: pointer;
 }
-.database-node-circle-label {
+.data-package-node-circle-label {
     font-size: 48px;
     font-family: Roboto, sans-serif;
     color: darkgray;
