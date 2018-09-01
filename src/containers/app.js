@@ -28,16 +28,19 @@ class App extends Component {
                 'external data': []
             },
             'count_contents': 0,
-            'database_defined': true,
+            'database_defined': false,
             // null if no form is open, @type if one is.
             'form_open': null,
-            'form_contents': {}
+            'form_contents': {},
+            'database_definition': {}
         }
     }
 
     render() {
         const onClickButton = (type) => {
-            this.setState(Object.assign({}, this.state, {form_open: type, form_contents: {}}));
+            if (this.state.database_defined) {
+                this.setState(Object.assign({}, this.state, {form_open: type, form_contents: {}}));
+            }
         };
 
         const genericOnChange = (func) => {
@@ -96,7 +99,9 @@ class App extends Component {
                         />
                     </div>
                     <div className={"footer-frame"}>
-                            <ButtonArray order={this.state.order} onClickButton={onClickButton}/>
+                            <ButtonArray order={this.state.order}
+                                         onClickButton={onClickButton}
+                                         active={this.state.database_defined}/>
                         <div className={"sharer-frame"}>
                         {/*// TODO*/}
                         </div>

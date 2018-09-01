@@ -16,18 +16,25 @@
     width: 100%;
     display: block;
 }
-.database-node {
-    fill: lightsteelblue;
-    stroke: steelblue;
+.database-node-circle {
+    fill: lightgray;
+    stroke: darkgray;
     stroke-width: 2px;
 }
-.database-node:hover {
-    fill: #a9c4f5;
+.database-node-circle:hover {
+    stroke: black;
+    fill: #eee;
     cursor: pointer;
 }
-.database-node:active {
-    fill: lightsteelblue;
+.database-node-circle-todo-label {
+    font-size: 48px;
+    font-family: Roboto, sans-serif;
+    color: darkgray;
+    cursor: pointer;
 }
+/*.database-node-circle:active {*/
+    /*fill: lightsteelblue;*/
+/*}*/
 .test-triangle {
     transform: rotate(0deg);
 }
@@ -74,15 +81,18 @@
     width: 30px;
     height: 30px;
     border-radius:15px;
-    /*box-shadow: 0 0 3px 3px rgba(216, 216, 216,0.5);*/
     border: 2px solid lightgray;
     background: white;
     color: gray;
 }
-.button-frame:hover {
+.button-frame-active:hover {
     opacity: 0.8;
 }
-.button-frame:hover .button-circle {
+.button-frame-inactive {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+.button-frame-active:hover.button-circle {
     background: #f2f2f2;
     color: black;
     border: 2px solid black;

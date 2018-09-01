@@ -70,9 +70,18 @@ class Graph extends Component {
             .attr("cy", 0)
             .attr("r", node_r)
             .classed("database-node-circle", true)
-            .attr("stroke", "gray")
-            .attr("stroke-width", "2px")
-            .attr("fill", "lightgray");
+            .classed("database-node-circle-todo", this.props.database_defined)
+            .classed("database-node-circle-initialized", !this.props.database_defined);
+
+        if (!this.props.database_defined) {
+            viz.append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .classed("database-node-circle-todo-label", true)
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "middle")
+                .text('+');
+        }
 
         if (this.props.database_defined) {
             // TODO: pass in a database icon.
