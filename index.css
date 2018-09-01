@@ -21,7 +21,7 @@
     stroke: darkgray;
     stroke-width: 2px;
 }
-.data-package-node-circle:hover {
+.data-package-node-mouseover {
     stroke: black;
     fill: #eee;
     cursor: pointer;

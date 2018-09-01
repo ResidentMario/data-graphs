@@ -13,18 +13,12 @@ class Graph extends Component {
         let r = 380;
         let node_r = 40;
 
-        viz.append("circle")
-            .attr("r", r)
-            .attr("cx", "0")
-            .attr("cy", "0")
-            .attr("stroke", "black")
-            .attr("fill", "transparent");
-
         const degreesToRadians = d => d * (Math.PI / 180);
 
         let pentagon_points = [...Array(5).keys()]
             .map(i => [r * Math.cos(degreesToRadians(90 - 72 * i)), r * Math.sin(degreesToRadians(90 - 72 * i))]);
 
+        // Note: this overplots.
         viz.append("g")
             .selectAll("line")
             .data(pentagon_points)
@@ -65,6 +59,7 @@ class Graph extends Component {
             return [node_depth * Math.cos(degreesToRadians(angle)), node_depth * Math.sin(degreesToRadians(angle))];
         }
 
+        d3.select(".data-package-node-circle").remove();
         viz.append("circle")
             .attr("cx", 0)
             .attr("cy", 0)
@@ -72,7 +67,9 @@ class Graph extends Component {
             .classed("data-package-node-circle", true)
             .classed("data-package-node-circle-todo", this.props.data_package_defined)
             .classed("data-package-node-circle-initialized", !this.props.data_package_defined)
-            .on("click", () => { this.props.onClickDataPackageNode(); });
+            .on("click", () => { this.props.onClickDataPackageNode(); })
+            .on("mouseover", () => { d3.select(".data-package-node-circle").classed("data-package-node-mouseover", true); })
+            .on("mouseout",  () => { d3.select(".data-package-node-circle").classed("data-package-node-mouseover", false); });
 
         let data_package_node_text_label = this.props.data_package_defined ? '💾' : '+';
         viz.append("text")
@@ -82,7 +79,9 @@ class Graph extends Component {
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
             .text(data_package_node_text_label)
-            .on("click", () => { this.props.onClickDataPackageNode(); });
+            .on("click", () => { this.props.onClickDataPackageNode(); })
+            .on("mouseover", () => { d3.select(".data-package-node-circle").classed("data-package-node-mouseover", true); })
+            .on("mouseout",  () => { d3.select(".data-package-node-circle").classed("data-package-node-mouseover", false); });
 
         for (let cls of Object.keys(this.props.contents)) {
 
@@ -101,7 +100,7 @@ class Graph extends Component {
                     .attr("stroke-width", "2px")
                     .attr('transform', 'scale(1, -1)')
                     .classed("node-circle", true)
-                    .on("click", () => { console.log("HELLO!"); this.props.onClickAnnotationNode(cls, item_idx) })
+                    .on("click", () => { this.props.onClickAnnotationNode(cls, item_idx) })
             });
         }
 
