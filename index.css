@@ -58,7 +58,8 @@
     position: relative;  /* Needed to position button circle. */
     display: inline;
     border-radius: 5px;
-    padding:10px;
+    padding-top:10px;
+    padding-bottom:10px;
     font-family: Roboto, sans-serif;
     font-size: 16px;
     padding-left: 45px;
