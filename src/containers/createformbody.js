@@ -31,16 +31,15 @@ class CreateFormBody extends Component {
 
         const reset_button_active = form_keys.length > 0 && form_keys.map(k => this.props.form_contents[k].length > 0).some(v => v);
 
-        return <div className={"form-frame"}>
-            <div className={"form-explainer"}>{c}</div>
+        return [
+            <div className={"form-explainer"}>{c}</div>,
             <div className={"form-fill-frame"}>
                 <FormFill type={this.props.type} form_contents={this.props.form_contents} genericOnChange={this.props.genericOnChange}/>
-            </div>
-            <FormButton button_type={'back'} active={true} onClick={this.props.onBackButtonClick}/>
-            <FormButton button_type={'reset'} active={reset_button_active} onClick={this.props.onResetButtonClick}/>
+            </div>,
+            <FormButton button_type={'back'} active={true} onClick={this.props.onBackButtonClick}/>,
+            <FormButton button_type={'reset'} active={reset_button_active} onClick={this.props.onResetButtonClick}/>,
             <FormButton button_type={'submit'} active={submit_button_active} onClick={this.props.onSubmitButtonClick}/>
-        </div>
-
+        ]
     }
 }
 

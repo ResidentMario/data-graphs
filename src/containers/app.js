@@ -16,9 +16,17 @@ class App extends Component {
                 {type: 'exploration', rgb: '215,25,28'},
                 {type: 'visualization', rgb: '43,131,186'},
                 {type: 'comment', rgb: '253,174,97'},
-                {type: 'external link', rgb: '171,221,164'},
-                {type: 'external data', rgb: '255,255,191'}
+                {type: 'external link', rgb: '145,210,135'},
+                {type: 'external data', rgb: '255,206,60'}
             ],
+            'icons': {
+                'exploration': '🔎',
+                'visualization': '📊',
+                'comment': '💬',
+                'external link': '🔗',
+                'external data': '📌',
+                'datapackage': '💾'
+            },
             'graph_contents': {
                 'exploration': [],
                 'visualization': [],
@@ -37,6 +45,16 @@ class App extends Component {
             'data_package_definition': null,
             'graph_id': null
         }
+    }
+
+    componentDidMount(){
+        document.addEventListener("keydown", (event) => {
+            if (event.keyCode === 27){
+                if (this.state.form) {
+                    this.setState(Object.assign({}, this.state, {form: null}));
+                }
+            }
+        }, false);
     }
 
     render() {
@@ -67,6 +85,11 @@ class App extends Component {
                 contents: {},
                 mode: this.state.form.mode
             }}));
+
+            // TODO: this is an unsightly hack.
+            document.getElementById('form-textarea-title').value = "";
+            document.getElementById('form-textarea-link').value = "";
+            document.getElementById('form-textarea-body').value = "";
         };
 
         const onSubmit = () => {
@@ -119,6 +142,8 @@ class App extends Component {
                   onResetButtonClick={onResetButtonClick}
                   onSubmit={onSubmit}
                   data_package_definition={this.state.data_package_definition}
+                  icons={this.state.icons}
+                  annotation_order={this.state.annotation_order}
             /> :
             null;
 
@@ -136,6 +161,7 @@ class App extends Component {
                             count_annotation_nodes={this.state.count_annotation_nodes}
                             onClickDataPackageNode={onClickDataPackageNode}
                             onClickAnnotationNode={onClickAnnotationNode}
+                            icons={this.state.icons}
                         />
                     </div>
                     <div className={"footer-frame"}>

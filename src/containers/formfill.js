@@ -23,26 +23,24 @@ class FormFill extends Component {
                 objs.push(
                     <div className={"form-subarea"}>
                         <div className={"form-fill-label"}>Title</div>
-                        <textarea className={"form-textarea-title"} placeholder={"Your title"} onChange={(event) => {
-                        this.props.genericOnChange(onChangeTitle(event));}}/>
+                        <textarea className={"form-textarea-title"} id={"form-textarea-title"} placeholder={"Your title"}
+                                  onChange={(event) => {this.props.genericOnChange(onChangeTitle(event));}}/>
                     </div>
                 )
             }
             if (body) {
                 objs.push(<div className={"form-subarea"}>
                         <div className={"form-fill-label"}>Explanation</div>
-                        <textarea className={"form-textarea-body"} placeholder={"Your comment body"} onChange={(event) => {
-                            this.props.genericOnChange(onChangeBody(event));
-                        }}/>
+                        <textarea className={"form-textarea-body"} id={"form-textarea-body"} placeholder={"Your comment body"}
+                                  onChange={(event) => {this.props.genericOnChange(onChangeBody(event));}}/>
                     </div>
                 )
             }
             if (link) {
                 objs.push(<div className={"form-subarea"}>
                         <div className={"form-fill-label"}>Link</div>
-                        <textarea className={"form-textarea-link"} placeholder={"Your external URL"} onChange={(event) => {
-                            this.props.genericOnChange(onChangeLink(event));
-                        }}/>
+                        <textarea className={"form-textarea-link"} id={"form-textarea-link"} placeholder={"Your external URL"}
+                                  onChange={(event) => {this.props.genericOnChange(onChangeLink(event));}}/>
                     </div>
                 )
             }
