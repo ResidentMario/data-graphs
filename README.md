@@ -1,5 +1,7 @@
 ## data-graphs
 
+![](https://i.imgur.com/pIB73KV.png)
+
 ### Introduction 
 
 Data doesn't exist in a vacuum. Whatever dataset you're working with, the chances are good that someone else has already played with it. Wouldn't it be great if instead of starting from scratch, you could incorporate what they've learned into what you're learning right away?
